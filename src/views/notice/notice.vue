@@ -36,12 +36,12 @@ const scrollNotice = (e: any) => {
   }
 };
 const clearNotice = async () => {
-  // const clearRes: any = (await api.request.patch("message")) as ResultProps;
-  // if (clearRes.msg === "OK") {
-  //   noticeList.value = [];
-  //   page.value = 1;
-  //   total.value = 0;
-  // }
+  const clearRes: any = (await api.request.patch("message")) as ResultProps;
+  if (clearRes.msg === "OK") {
+    noticeList.value = [];
+    page.value = 1;
+    total.value = 0;
+  }
 };
 
 const handleMate = async (type: string, index: number) => {

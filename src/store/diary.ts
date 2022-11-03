@@ -9,27 +9,36 @@ import dayjs from "dayjs";
 // 使用setup模式定义
 export const diaryStore = defineStore("diaryStore", () => {
   const diaryList = ref<Diary[]>([]);
+  const diaryFriendList = ref<Diary[]>([]);
   const diaryMonth = ref<string[]>([]);
+  const diaryFriendMonth = ref<string[]>([]);
   const diaryDateText = ref<string>("");
   const diaryDetail = ref<Diary | null>(null);
   const page = ref<number>(1);
   const total = ref<number>(0);
+  const friendPage = ref<number>(1);
+  const friendTotal = ref<number>(0);
   const imageList = ref<string[]>([]);
   const getDiaryList = async (
-    page: number,
+    newPage: number,
     friendKey?: string,
     filterDate?: number
   ) => {
     const infoRes = (await api.request.get("card/list", {
       friendKey: friendKey,
       filterDate: filterDate,
-      page: page,
+      page: newPage,
       limit: 30,
     })) as ResultProps;
     if (infoRes.msg === "OK") {
-      if (page === 1) {
+      if (newPage === 1) {
         diaryList.value = [];
         diaryDateText.value = "";
+        if (friendKey) {
+          friendPage.value = 1;
+        } else {
+          page.value = 1;
+        }
       }
       infoRes.data = infoRes.data.map((diaryItem, diaryIndex) => {
         let diaryDate = [
@@ -51,19 +60,31 @@ export const diaryStore = defineStore("diaryStore", () => {
         };
         return diaryItem;
       });
-      diaryList.value = [...diaryList.value, ...infoRes.data];
-      total.value = infoRes.total as number;
+      if (friendKey) {
+        diaryFriendList.value = [...diaryFriendList.value, ...infoRes.data];
+        friendTotal.value = infoRes.total as number;
+      } else {
+        diaryList.value = [...diaryList.value, ...infoRes.data];
+        total.value = infoRes.total as number;
+      }
     }
   };
+
   const getDiaryMonth = async (friendKey?: string, filterTime?: number) => {
     const monthRes = (await api.request.get("card/month", {
       friendKey: friendKey,
       filterTime: filterTime,
     })) as ResultProps;
     if (monthRes.msg === "OK") {
-      diaryMonth.value = monthRes.data.map((diaryItem, diaryIndex) => {
-        return diaryItem.ctime;
-      });
+      if (friendKey) {
+        diaryFriendMonth.value = monthRes.data.map((diaryItem, diaryIndex) => {
+          return diaryItem.ctime;
+        });
+      } else {
+        diaryMonth.value = monthRes.data.map((diaryItem, diaryIndex) => {
+          return diaryItem.ctime;
+        });
+      }
     }
   };
   const getDiaryDetail = async (key: string) => {
@@ -85,20 +106,28 @@ export const diaryStore = defineStore("diaryStore", () => {
   const setPage = (newPage: number) => {
     page.value = newPage;
   };
+  const setFriendPage = (newPage: number) => {
+    friendPage.value = newPage;
+  };
   const setImageList = (newList: string[]) => {
-      imageList.value=[...newList];
+    imageList.value = [...newList];
   };
   return {
     diaryList,
+    diaryFriendList,
     getDiaryList,
     diaryMonth,
+    diaryFriendMonth,
     getDiaryMonth,
     diaryDetail,
     getDiaryDetail,
     setDiaryDetail,
     total,
+    friendTotal,
     page,
     setPage,
+    friendPage,
+    setFriendPage,
     imageList,
     setImageList,
   };

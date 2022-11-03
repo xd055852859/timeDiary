@@ -17,8 +17,16 @@ const day: any = inject("dayjs");
 
 const targetDate = ref<string>("");
 const friendDiaryNum = ref<number>(0);
+onMounted(() => {
+  getDiaryList(1);
+  getDiaryMonth();
+  getFriendDiaryNum();
+});
 const toEditor = () => {
   router.push("/home/detail/create?date=" + day(diaryDate.value).valueOf());
+};
+const toUrl = (url) => {
+  router.push(url);
 };
 const getFriendDiaryNum = async () => {
   const numRes = (await api.request.get("/card/unRead")) as ResultProps;
@@ -53,22 +61,12 @@ const handlechangeDate = (val) => {
   } else {
     getDiaryList(1, "", day(val).startOf("day").valueOf());
   }
+  setPage(1);
   setDate(day(val).startOf("day").valueOf());
 };
 const handlechangePanel = (date) => {
-  getDiaryMonth(day(date).startOf("month").startOf("day").valueOf());
+  getDiaryMonth("",day(date).startOf("month").startOf("day").valueOf());
 };
-watch(
-  user,
-  (newVal) => {
-    if (newVal) {
-      getDiaryList(1);
-      getDiaryMonth();
-      getFriendDiaryNum();
-    }
-  },
-  { immediate: true }
-);
 watch(page, (newVal) => {
   getDiaryList(newVal);
 });
@@ -109,7 +107,11 @@ watch(
       </div>
     </template>
     <template #right>
-      <el-badge :value="friendDiaryNum" :hidden="friendDiaryNum === 0">
+      <el-badge
+        :value="friendDiaryNum"
+        :hidden="friendDiaryNum === 0"
+        @click="toUrl('/home/friendDiary')"
+      >
         <iconpark-icon name="message" :size="30" style="cursor: pointer" />
       </el-badge>
     </template>

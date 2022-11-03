@@ -8,6 +8,7 @@ import appStore from "@/store";
 import { MoreFilled } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import { storeToRefs } from "pinia";
+const { statusHeight, navigationHeight } = storeToRefs(appStore.commonStore);
 const { diaryDetail } = storeToRefs(appStore.diaryStore);
 const { getDiaryDetail, setDiaryDetail } = appStore.diaryStore;
 const dayjs: any = inject("dayjs");
@@ -60,7 +61,15 @@ const deleteDiary = async () => {
       </el-dropdown>
     </template>
   </cheader>
-  <div class="diary-preview box">
+  <div
+    class="diary-preview box"
+    :style="{
+      height:
+        statusHeight && navigationHeight
+          ? `calc(100vh - ${+statusHeight + +navigationHeight  + 30}px)`
+          : `calc(100vh - 85px)`,
+    }"
+  >
     <div class="date">{{ dayjs(diaryDetail?.storyTime).date() }}</div>
     <div class="info">
       <div class="left">

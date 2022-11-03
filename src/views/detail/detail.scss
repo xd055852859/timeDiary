@@ -1,4 +1,5 @@
 .diary-editor {
+  padding-top: 30px;
   .editor {
     width: 100%;
     position: relative;
@@ -16,7 +17,29 @@
       width: 100%;
       height: 40px;
       margin-bottom: 10px;
+      cursor: pointer;
       @include flex(space-between, center, null);
+    }
+  }
+  .share-box {
+    .item {
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+      cursor: pointer;
+      @include flex(center, center, wrap);
+      .name {
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+      }
+      .icon {
+        position: absolute;
+        top: 0px;
+        right: calc(50% - 35px);
+        z-index: 2;
+      }
     }
   }
 }

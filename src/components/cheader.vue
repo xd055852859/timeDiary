@@ -14,6 +14,7 @@ const props = defineProps<{
   headerIcon?: string;
   headerTitle?: string;
   headerState?: boolean;
+  headerStyle?: any;
   clickState?: boolean;
 }>();
 const emits = defineEmits(["iconClick", "clickBack", "headerClick"]);
@@ -27,9 +28,11 @@ onMounted(() => {
     ? window.location.search.split("?")[1]
     : window.location.hash.split("?")[1];
   setMobileHeader(
-    getSearchParamValue(search, "statusHeight")||localStorage.getItem("statusHeight"),
-    getSearchParamValue(search, "navigationHeight")||localStorage.getItem("navigationHeight"),
-    getSearchParamValue(search, "isHidden")||localStorage.getItem("isHidden")
+    getSearchParamValue(search, "statusHeight") ||
+      localStorage.getItem("statusHeight"),
+    getSearchParamValue(search, "navigationHeight") ||
+      localStorage.getItem("navigationHeight"),
+    getSearchParamValue(search, "isHidden") || localStorage.getItem("isHidden")
   );
 });
 const back = () => {
@@ -51,7 +54,11 @@ const back = () => {
   <div
     class="common-header"
     :class="'dp-center-center'"
-    :style="navigationHeight ? { height: `${navigationHeight}px` } : {}"
+    :style="
+      navigationHeight
+        ? { height: `${navigationHeight}px`, ...headerStyle }
+        : { ...headerStyle }
+    "
   >
     <div class="left dp--center" v-if="!isHidden">
       <!-- <icon-font

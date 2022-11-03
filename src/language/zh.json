@@ -13,9 +13,10 @@
     "text": "请输入文字，或使用 / 选择功能",
     "weather": "天气",
     "location": "位置",
-    "shareTo": "日记分享",
+    "shareTo": "日记共享",
     "isPublic": "日记漂流",
-    "save": "发布",
+    "saving": "保存中",
+    "saved": "已保存",
     "saveSuccess": "保存成功"
   },
   "preview": {
@@ -56,5 +57,8 @@
     "refuse": "拒绝",
     "handleAgree": "已同意",
     "handleRefuse": "已拒绝"
+  },
+  "friendDiary": {
+    "friendDiary": "亲友日记"
   }
 }

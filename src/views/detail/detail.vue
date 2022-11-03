@@ -3,13 +3,17 @@ import { ElMessage } from "element-plus";
 import Tiptap from "@/components/editor/tiptap.vue";
 import appStore from "@/store";
 import i18n from "@/language/i18n";
+import Avatar from "@/components/cavatar.vue";
 import api from "@/services/api";
 import { ResultProps } from "@/interface/Common";
 import router from "@/router";
 import { storeToRefs } from "pinia";
 import { getSearchParamValue } from "@/services/util";
+const { statusHeight, navigationHeight } = storeToRefs(appStore.commonStore);
 const { diaryDetail, imageList } = storeToRefs(appStore.diaryStore);
 const { getDiaryDetail, setImageList } = appStore.diaryStore;
+const { getFilterMate } = appStore.mateStore;
+const { filterMateList } = storeToRefs(appStore.mateStore);
 const dayjs: any = inject("dayjs");
 const route = useRoute();
 const editorRef = ref<any>(null);
@@ -20,6 +24,8 @@ const isPublic = ref<boolean>(false);
 const diaryKey = ref<string | null>("");
 const timer = ref<number | null>(null);
 const targetDate = ref<number>(0);
+const saveState = ref<number>(0);
+const shareVisible = ref<boolean>(false);
 onMounted(() => {
   diaryKey.value =
     route.params.id !== "create" ? (route.params.id as string) : "";
@@ -27,9 +33,10 @@ onMounted(() => {
     getDiaryDetail(diaryKey.value as string);
   }
   getTime();
+  getFilterMate(0, 1);
   timer.value = setInterval(() => {
     handleSave("auto");
-  }, 8000);
+  }, 3000);
 });
 onUnmounted(() => {
   if (timer.value) {
@@ -49,17 +56,13 @@ const handleSave = async (type?: string) => {
     diaryKey.value =
       route.params.id !== "create" ? (route.params.id as string) : "";
     getTime();
-
     if (saveArray) {
+      saveState.value = 1;
       const [title, content, summary, cover] = saveArray;
       let obj = {
         title: title,
         content: content,
         summary: summary,
-        location: location.value,
-        weather: weather.value,
-        isPublic: isPublic.value,
-        shareTo: shareTo.value,
         cover: cover,
       };
       if (diaryKey.value) {
@@ -68,13 +71,7 @@ const handleSave = async (type?: string) => {
           ...obj,
         })) as ResultProps;
         if (postRes.msg === "OK") {
-          if (type !== "auto") {
-            ElMessage({
-              message: i18n.global.t(`detail.saveSuccess`),
-              type: "success",
-              duration: 1000,
-            });
-          }
+          saveState.value = 2;
         }
       } else {
         const postRes = (await api.request.post("card", {
@@ -83,38 +80,7 @@ const handleSave = async (type?: string) => {
           ...obj,
         })) as ResultProps;
         if (postRes.msg === "OK") {
-          setImageList([]);
-          router.push(
-            `/home/detail/${postRes.data._key}?date=` + targetDate.value
-          );
-        }
-      }
-    } else if (type === "save") {
-      let obj = {
-        location: location.value,
-        weather: weather.value,
-        isPublic: isPublic.value,
-        shareTo: shareTo.value,
-        imageList: imageList.value,
-      };
-      if (diaryKey.value) {
-        const postRes = (await api.request.patch("card", {
-          cardKey: diaryKey.value,
-          ...obj,
-        })) as ResultProps;
-        if (postRes.msg === "OK") {
-          ElMessage({
-            message: i18n.global.t(`detail.saveSuccess`),
-            type: "success",
-            duration: 1000,
-          });
-        }
-      } else {
-        const postRes = (await api.request.post("card", {
-          storyTime: targetDate.value,
-          ...obj,
-        })) as ResultProps;
-        if (postRes.msg === "OK") {
+          saveState.value = 2;
           setImageList([]);
           router.push(
             `/home/detail/${postRes.data._key}?date=` + targetDate.value
@@ -124,8 +90,37 @@ const handleSave = async (type?: string) => {
     }
   }
 };
+const handleSetSave = async (
+  key: string,
+  value: string | boolean | string[]
+) => {
+  diaryKey.value =
+    route.params.id !== "create" ? (route.params.id as string) : "";
+  if (diaryKey.value) {
+    api.request.patch("card", {
+      cardKey: diaryKey.value,
+      [key]: value,
+    });
+  } else {
+    const postRes = (await api.request.post("card", {
+      storyTime: targetDate.value,
+      [key]: value,
+    })) as ResultProps;
+    if (postRes.msg === "OK") {
+      router.push(`/home/detail/${postRes.data._key}?date=` + targetDate.value);
+    }
+  }
+};
 const clickBack = () => {
   router.push("/home/diary");
+};
+const chooseShare = (key: string) => {
+  let index = shareTo.value.indexOf(key);
+  if (index !== -1) {
+    shareTo.value.splice(index, 1);
+  } else {
+    shareTo.value.push(key);
+  }
 };
 watch(diaryDetail, (newVal) => {
   if (newVal) {
@@ -140,12 +135,26 @@ watch(diaryDetail, (newVal) => {
   <cheader @clickBack="clickBack" clickState>
     <template #title>{{ dayjs(targetDate).format("MM月DD日") }}</template>
     <template #right
-      ><el-button type="primary" @click="handleSave('save')">{{
-        $t("detail.save")
-      }}</el-button></template
+      ><div style="color: var(--diary-font-time); font-size: 14px">
+        {{
+          saveState === 2
+            ? $t("detail.saved")
+            : saveState === 1
+            ? $t("detail.saving")
+            : ""
+        }}
+      </div></template
     >
   </cheader>
-  <div class="diary-editor box">
+  <div
+    class="diary-editor box"
+    :style="{
+      height:
+        statusHeight && navigationHeight
+          ? `calc(100vh - ${+statusHeight + +navigationHeight + 30}px)`
+          : `calc(100vh - 85px)`,
+    }"
+  >
     <div class="editor">
       <Tiptap
         ref="editorRef"
@@ -189,7 +198,7 @@ watch(diaryDetail, (newVal) => {
           />
         </div>
       </div>
-      <div class="item">
+      <div class="item" @click="shareVisible = true">
         <div class="dp--center">
           <iconpark-icon
             name="shareTo"
@@ -197,11 +206,23 @@ watch(diaryDetail, (newVal) => {
             style="margin-right: 5px"
           />{{ $t("detail.shareTo") }}
         </div>
-        <div>
+        <div class="dp--center">
+          <avatar
+            v-for="item in filterMateList"
+            :key="item._key"
+            :name="item.userName"
+            :avatar="item.userAvatar"
+            :index="0"
+            :size="30"
+            :avatarStyle="{
+              fontSize: '20px',
+              marginRight: '3px',
+            }"
+          />
           <iconpark-icon
             name="rightArrow"
             :size="18"
-            style="margin-left: 5px"
+            style="margin-left: 2px"
           />
         </div>
       </div>
@@ -213,10 +234,62 @@ watch(diaryDetail, (newVal) => {
             style="margin-right: 5px"
           />{{ $t("detail.isPublic") }}
         </div>
-        <el-switch v-model="isPublic" />
+        <el-switch
+          v-model="isPublic"
+          @change="(val) => handleSetSave('isPublic', val)"
+        />
       </div>
     </div>
+    <el-drawer
+      v-model="shareVisible"
+      :title="$t('detail.shareTo')"
+      direction="btt"
+      size="60%"
+      @close="
+        () => {
+          handleSetSave('shareTo', shareTo);
+          shareVisible = false;
+        }
+      "
+    >
+      <div class="share-box">
+        <el-row :gutter="20" class="row">
+          <el-col
+            :xs="8"
+            :sm="6"
+            :md="4"
+            :lg="3"
+            :xl="1"
+            v-for="item in filterMateList"
+            :key="item._key"
+          >
+            <div class="item" @click="chooseShare(item._key)">
+              <avatar
+                :name="item.userName"
+                :avatar="item.userAvatar"
+                :index="0"
+                :size="80"
+                :avatarStyle="{
+                  fontSize: '20px',
+                  marginRight: '8px',
+                }"
+                :chooseState="shareTo.indexOf(item._key) !== -1"
+                :borderState="shareTo.indexOf(item._key) !== -1"
+              />
+              <div class="name">{{ item.userName }}</div>
+              <iconpark-icon
+                name="chooseShare"
+                color="#3C9915"
+                :size="25"
+                class="icon"
+                v-if="shareTo.indexOf(item._key) !== -1"
+              />
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+    </el-drawer>
   </div>
 </template>
 <style src="./detail.scss" scoped lang="scss"></style>
-<style></style>
+<style lang="scss"></style>

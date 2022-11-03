@@ -86,6 +86,20 @@ body,
     max-width: 960px;
   }
 }
+.diary-date {
+  .el-input {
+    width: 120px !important;
+    .el-input__wrapper {
+      background-color: transparent;
+      box-shadow: none;
+      .el-input__inner {
+        text-align: center;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    }
+  }
+}
 @mixin more-toLong($line) {
   overflow: hidden;
   text-overflow: ellipsis;

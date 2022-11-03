@@ -10,9 +10,8 @@ const props = defineProps<{
   index: number;
   size?: number;
   avatarStyle?: any;
-  onlineState?: boolean;
-  showOnline?: boolean;
-  chooseOnline?: boolean;
+  borderState?: boolean;
+  chooseState?: boolean;
 }>();
 const bgColor = computed(() => BgColorArray[props.index % 5]);
 
@@ -30,12 +29,8 @@ const BgColorArray = [
       :style="{
         width: size + 'px',
         height: size + 'px',
-        border: showOnline
-          ? onlineState || avatarKey === user?._key
-            ? '3px solid var(--el-color-success)'
-            : '3px solid #fff'
-          : '',
-        boxShadow: chooseOnline ? '0px 4px 9px 0px rgba(0,0,0,0.05);' : '',
+        border: borderState ? '3px solid #3C9915' : '',
+        boxShadow: chooseState ? '0px 4px 9px 0px rgba(0,0,0,0.05);' : '',
         ...avatarStyle,
       }"
       class="avatar-content"
