@@ -1,0 +1,32 @@
+.drift {
+  position: relative;
+  z-index: 1;
+  .container {
+    @include flex(center, null, null);
+    .item {
+      width: 500px;
+      max-width: 80vw;
+      height: 75vh;
+      position: absolute;
+      background: var(--diary-item-color);
+      border-radius: 18.5px;
+      box-shadow: 0px 0px 4.5px 0px rgba(0,0,0,0.23); 
+      transform-origin: center center;
+      @include p-number(5%, 25px); // transform-origin: left bottom;
+      .diary {
+        .title {
+          font-size: 24px;
+          font-weight: 600;
+          margin-bottom: 10px;
+        }
+        .summary {
+          font-size: 16px;
+          line-height: 45px;
+          color: var(--diary-font-summary);
+          text-indent: 2em;
+          word-break: break-all;
+        }
+      }
+    }
+  }
+}

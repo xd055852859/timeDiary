@@ -1,0 +1,60 @@
+{
+  "name": "时光日记",
+  "sure": "确认",
+  "cancel": "取消",
+  "copy": "复制",
+  "common": {
+    "login": "登录",
+    "loginError": "登录失效,请重新登录",
+    "logoutMessage": "退出登录成功"
+  },
+  "detail": {
+    "title": "请输入标题",
+    "text": "请输入文字，或使用 / 选择功能",
+    "weather": "天气",
+    "location": "位置",
+    "shareTo": "日记分享",
+    "isPublic": "日记漂流",
+    "save": "发布",
+    "saveSuccess": "保存成功"
+  },
+  "preview": {
+    "edit": "编辑",
+    "delete": "删除",
+    "isPublic": "设为漂流",
+    "deleteTips": "删除提示",
+    "deleteText": "请确认是否删除该日记",
+    "deleteMessage": "删除成功"
+  },
+  "userCenter": {
+    "diary": "首页",
+    "gallery": "图库",
+    "drift": "漂流日记",
+    "mate": "亲友",
+    "sun": "日间",
+    "moon": "夜间",
+    "set": "设置",
+    "quit": "退出"
+  },
+  "mate": {
+    "addMate": "加亲友",
+    "addButton": "绑定",
+    "addInput": "请输入亲友id",
+    "inviteCode": "我的邀请码",
+    "addMateText": "添加友成功,请等待好友确认",
+    "addMateError": "请输入亲友id"
+  },
+  "message": {
+    "message": "通知",
+    "setRead": "设为已读",
+    "read": "已读",
+    "unRead": "未读",
+    "addFriend": "请求添加你为好友",
+    "agreeAdd": "同意添加你为好友",
+    "refuseAdd": "拒绝添加你为好友",
+    "agree": "同意",
+    "refuse": "拒绝",
+    "handleAgree": "已同意",
+    "handleRefuse": "已拒绝"
+  }
+}

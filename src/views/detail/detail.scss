@@ -1,0 +1,22 @@
+.diary-editor {
+  .editor {
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    background-color: var(--diary-item-color);
+    margin-bottom: 20px;
+    border-radius: 6px;
+    box-shadow: 0px 1px 3px 0px rgba(182, 182, 182, 0.5);
+    @include scroll();
+  }
+  .set {
+    width: 100%;
+    height: 200px;
+    .item {
+      width: 100%;
+      height: 40px;
+      margin-bottom: 10px;
+      @include flex(space-between, center, null);
+    }
+  }
+}

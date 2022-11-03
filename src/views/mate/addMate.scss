@@ -1,0 +1,28 @@
+.addMate {
+  .container {
+    align-content: flex-start;
+    @include flex(center, center, wrap);
+  }
+  .input {
+    width: 100%;
+    height: 44px;
+    background: var(--diary-item-color);
+    border: 1px solid #333333;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 10vh;
+    margin-bottom: 40px;
+    @include flex(space-between, center, null);
+    .button {
+      width: 150px;
+      height: 100%;
+      color: var(--diary-opposite-color);
+      background: var(--el-color-primary);
+      @include flex(center, center, null);
+    }
+  }
+  .button {
+    width: 100%;
+    height: 40px;
+  }
+}
