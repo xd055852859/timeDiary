@@ -32,12 +32,13 @@ export const diaryStore = defineStore("diaryStore", () => {
     })) as ResultProps;
     if (infoRes.msg === "OK") {
       if (newPage === 1) {
-        diaryList.value = [];
         diaryDateText.value = "";
         if (friendKey) {
           friendPage.value = 1;
+          diaryFriendList.value = [];
         } else {
           page.value = 1;
+          diaryList.value = [];
         }
       }
       infoRes.data = infoRes.data.map((diaryItem, diaryIndex) => {

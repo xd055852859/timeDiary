@@ -9,6 +9,7 @@ import { ResultProps } from "@/interface/Common";
 import router from "@/router";
 import { storeToRefs } from "pinia";
 import { getSearchParamValue } from "@/services/util";
+import { Person } from "@/interface/User";
 const { statusHeight, navigationHeight } = storeToRefs(appStore.commonStore);
 const { diaryDetail, imageList } = storeToRefs(appStore.diaryStore);
 const { getDiaryDetail, setImageList } = appStore.diaryStore;
@@ -20,6 +21,7 @@ const editorRef = ref<any>(null);
 const weather = ref<string>("");
 const location = ref<string>("");
 const shareTo = ref<string[]>([]);
+const sharers = ref<Person[]>([]);
 const isPublic = ref<boolean>(false);
 const diaryKey = ref<string | null>("");
 const timer = ref<number | null>(null);
@@ -114,12 +116,14 @@ const handleSetSave = async (
 const clickBack = () => {
   router.push("/home/diary");
 };
-const chooseShare = (key: string) => {
-  let index = shareTo.value.indexOf(key);
+const chooseShare = (item: Person) => {
+  let index = shareTo.value.indexOf(item._key);
   if (index !== -1) {
     shareTo.value.splice(index, 1);
+    sharers.value.splice(index, 1);
   } else {
-    shareTo.value.push(key);
+    shareTo.value.push(item._key);
+    sharers.value.push(item);
   }
 };
 watch(diaryDetail, (newVal) => {
@@ -128,6 +132,7 @@ watch(diaryDetail, (newVal) => {
     location.value = diaryDetail.value?.location || "";
     isPublic.value = !!diaryDetail.value?.isPublic;
     shareTo.value = diaryDetail.value?.shareTo || [];
+    sharers.value = diaryDetail.value?.sharers || [];
   }
 });
 </script>
@@ -208,7 +213,7 @@ watch(diaryDetail, (newVal) => {
         </div>
         <div class="dp--center">
           <avatar
-            v-for="item in filterMateList"
+            v-for="item in sharers"
             :key="item._key"
             :name="item.userName"
             :avatar="item.userAvatar"
@@ -263,7 +268,7 @@ watch(diaryDetail, (newVal) => {
             v-for="item in filterMateList"
             :key="item._key"
           >
-            <div class="item" @click="chooseShare(item._key)">
+            <div class="item" @click="chooseShare(item)">
               <avatar
                 :name="item.userName"
                 :avatar="item.userAvatar"

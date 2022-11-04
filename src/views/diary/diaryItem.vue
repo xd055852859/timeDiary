@@ -8,10 +8,11 @@ import "./diaryItem.scss";
 const dayjs: any = inject("dayjs");
 const props = defineProps<{
   info: Diary;
+  friendKey?: string;
   type?: string;
 }>();
 const toDetail = () => {
-  if (props.type) {
+  if (props.type || props.friendKey) {
     router.push(`/home/preview/${props.info._key}`);
   } else {
     router.push(

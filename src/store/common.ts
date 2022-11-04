@@ -12,7 +12,10 @@ export const commonStore = defineStore("commonStore", () => {
   const deviceType = ref<string>("");
 
   const locale = ref<string>("");
-  const diaryDate = ref<number>(dayjs().valueOf());
+  const chooseDate = ref<number>(dayjs().valueOf());
+  const chooseMonth = ref<number>(
+    dayjs().startOf("month").startOf("day").valueOf()
+  );
   const dark = ref<boolean>(!!localStorage.getItem("DARK"));
   const editorInfo = ref<Editor | null>(null);
   const noticeNum = ref<number>(0);
@@ -35,7 +38,10 @@ export const commonStore = defineStore("commonStore", () => {
     editorInfo.value = info;
   };
   const setDate = (date: number) => {
-    diaryDate.value = date;
+    chooseDate.value = date;
+  };
+  const setMonth = (date: number) => {
+    chooseMonth.value = date;
   };
   const setMobileHeader = (
     newStatusHeight,
@@ -62,8 +68,10 @@ export const commonStore = defineStore("commonStore", () => {
     setCommonLocale,
     editorInfo,
     setEditor,
-    diaryDate,
+    chooseDate,
     setDate,
+    chooseMonth,
+    setMonth,
     noticeNum,
     statusHeight,
     navigationHeight,

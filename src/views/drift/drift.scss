@@ -1,19 +1,28 @@
 .drift {
   position: relative;
   z-index: 1;
+  overflow: hidden !important;
   .container {
-    @include flex(center, null, null);
+    padding-top: 30px;
+    box-sizing: border-box;
+
     .item {
-      width: 500px;
-      max-width: 80vw;
-      height: 75vh;
+      width: 80vw;
+      // max-width: 80vw;
+      height: 65vh;
       position: absolute;
+      top: 50px;
+      left: calc(50% - 40vw);
       background: var(--diary-item-color);
       border-radius: 18.5px;
-      box-shadow: 0px 0px 4.5px 0px rgba(0,0,0,0.23); 
+      box-shadow: 0px 0px 4.5px 0px rgba(0, 0, 0, 0.23);
       transform-origin: center center;
       @include p-number(5%, 25px); // transform-origin: left bottom;
       .diary {
+        width: 100%;
+        height: 100%;
+        margin-bottom: 5vh;
+        cursor: pointer;
         .title {
           font-size: 24px;
           font-weight: 600;
@@ -26,6 +35,11 @@
           text-indent: 2em;
           word-break: break-all;
         }
+      }
+      .user {
+        width: 100%;
+        font-size: 20px;
+        @include flex(flex-end, center, wrap);
       }
     }
   }

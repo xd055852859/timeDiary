@@ -10,6 +10,7 @@ import { Drift } from "@/interface/drift";
 // 使用setup模式定义
 export const driftStore = defineStore("driftStore", () => {
   const driftList = ref<Drift[]>([]);
+  const driftKey = ref<string>("");
   const getDrift = async () => {
     const driftRes = (await api.request.get("card/random", {
       page: 1,
@@ -19,8 +20,24 @@ export const driftStore = defineStore("driftStore", () => {
       driftList.value = [...driftRes.data];
     }
   };
+  const deleteDrift = async (key: string) => {
+    let index = driftList.value.findIndex((item) => item._key === key);
+    if (index !== -1) {
+      driftList.value.splice(index, 1);
+      if (driftList.value.length === 0) {
+        driftKey.value = "";
+        getDrift();
+      }
+    }
+  };
+  const setDriftKey = async (key: string) => {
+    driftKey.value = key;
+  };
   return {
     driftList,
     getDrift,
+    deleteDrift,
+    driftKey,
+    setDriftKey,
   };
 });

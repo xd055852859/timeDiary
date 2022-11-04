@@ -1,3 +1,4 @@
+import { Person } from "./User";
 export interface Diary {
   _key: string;
   title?: string;
@@ -15,4 +16,5 @@ export interface Diary {
   weather?: string;
   location?: string;
   imageList?: string[];
+  sharers?: Person[];
 }

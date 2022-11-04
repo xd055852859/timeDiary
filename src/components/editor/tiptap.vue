@@ -11,6 +11,7 @@ import Image from "@tiptap/extension-image";
 import Placeholder from "@tiptap/extension-placeholder";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
+import CharacterCount from "@tiptap/extension-character-count";
 import i18n from "@/language/i18n";
 import { uploadFile } from "@/services/util";
 
@@ -44,6 +45,7 @@ const emptyContent = {
   ],
 };
 const defaultContent = props.initData?.content || emptyContent;
+const limit = 10000;
 const editor = useEditor({
   extensions: [
     StarterKit,
@@ -74,6 +76,9 @@ const editor = useEditor({
     Table.configure({
       resizable: true,
     }),
+    CharacterCount.configure({
+      limit,
+    }),
     TableRow,
     TableHeader,
     TableCell,
@@ -98,6 +103,7 @@ const editor = useEditor({
     if (props.initData) {
       editor.setEditable(props.isEdit);
       editor.commands.focus();
+
       // editor.commands.setContent(props.initData);
     }
   },
@@ -201,6 +207,7 @@ watch(
 const handlePost = () => {
   if (!editor.value) return;
   console.log(updateState.value);
+  console.log(editor.value.storage);
   if (updateState.value) {
     const json: JSONContent = editor.value.getJSON();
     let title: string | undefined = "";
@@ -424,9 +431,13 @@ defineExpose({
   </bubble-menu>
 
   <editor-content :editor="editor" />
+  <div v-if="editor" class="characterCount">
+    {{ `${editor.storage.characterCount.characters()} `
+    }}{{ $t("editor.characterCount") }}
+  </div>
   <el-dialog
     v-model="imgVisible"
-    title="img"
+    :title="$t('editor.img')"
     :width="'90vw'"
     :top="'5vh'"
     :append-to-body="true"
@@ -773,5 +784,14 @@ ul[data-type="taskList"] {
     height: 100%;
     object-fit: contain;
   }
+}
+.characterCount {
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  text-align: right;
+  color: var(--diary-font-time);
+  font-size: 14px;
+  @include p-number(20px, 0px);
 }
 </style>

@@ -7,3 +7,6 @@ export interface Mate {
   userAvatar: string;
   userName: string;
 }
+export interface Friend extends Mate {
+  unReadNum?: number;
+}

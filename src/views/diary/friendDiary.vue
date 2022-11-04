@@ -5,9 +5,10 @@ import Avatar from "@/components/cavatar.vue";
 import { ArrowDown } from "@element-plus/icons-vue";
 import { storeToRefs } from "pinia";
 import DiaryItem from "./diaryItem.vue";
+import router from "@/router";
 const { getFilterMate } = appStore.mateStore;
-const { diaryDate } = storeToRefs(appStore.commonStore);
-const { setDate } = appStore.commonStore;
+const { chooseDate, chooseMonth } = storeToRefs(appStore.commonStore);
+const { setDate, setMonth } = appStore.commonStore;
 const { filterMateList } = storeToRefs(appStore.mateStore);
 const { diaryFriendList, friendTotal, friendPage, diaryFriendMonth } =
   storeToRefs(appStore.diaryStore);
@@ -44,17 +45,24 @@ const handlechangeDate = (val) => {
   setDate(day(val).startOf("day").valueOf());
 };
 const handlechangePanel = (date) => {
+  setMonth(day(date).startOf("month").startOf("day").valueOf());
   getDiaryMonth(
     chooseFriendKey.value,
     day(date).startOf("month").startOf("day").valueOf()
   );
 };
 const hasDiary = ({ dayjs }) => {
-  console.log(diaryFriendMonth.value)
+  console.log(diaryFriendMonth.value.indexOf(dayjs.format("DD")) !== -1);
+  console.log(dayjs.month() === day(chooseMonth.value).month());
   return (
-    diaryFriendMonth.value.includes(dayjs.format("DD")) &&
-    dayjs.month() === day(diaryDate.value).month()
+    diaryFriendMonth.value.indexOf(dayjs.format("DD")) !== -1 &&
+    dayjs.month() === day(chooseMonth.value).month()
   );
+};
+const clickDiary = () => {
+  router.back();
+  setDate(day().startOf("day").valueOf());
+  setMonth(day().startOf("month").startOf("day").valueOf());
 };
 watch(filterMateList, (newList) => {
   if (newList) {
@@ -68,17 +76,19 @@ watch(chooseFriendKey, (newKey) => {
   }
 });
 watch(friendPage, (newVal) => {
-  getDiaryList(newVal, chooseFriendKey.value);
+  if (newVal !== 1) {
+    getDiaryList(newVal, chooseFriendKey.value);
+  }
 });
 watch(
-  diaryDate,
+  chooseDate,
   (newVal) => {
     targetDate.value = day(newVal).format("MM月DD日");
   },
   { immediate: true }
 );
 </script>
-<template>
+<template clickState :clickBack="clickDiary()">
   <cheader>
     <template #title>{{ $t("friendDiary.friendDiary") }}</template>
     <template #right></template>
@@ -90,17 +100,23 @@ watch(
       @click="chooseFriendKey = item._key"
       class="item"
     >
-      <avatar
-        :name="item.userName"
-        :avatar="item.userAvatar"
-        :index="0"
-        :size="chooseFriendKey === item._key ? 65 : 60"
-        :avatarStyle="{
-          fontSize: '20px',
-        }"
-        :chooseState="chooseFriendKey === item._key"
-        :borderState="chooseFriendKey === item._key"
-      />
+      <el-badge
+        :value="item.unReadNum"
+        :hidden="item.unReadNum === 0"
+        style="margin-top:10px"
+      >
+        <avatar
+          :name="item.userName"
+          :avatar="item.userAvatar"
+          :index="0"
+          :size="chooseFriendKey === item._key ? 65 : 60"
+          :avatarStyle="{
+            fontSize: '20px',
+          }"
+          :chooseState="chooseFriendKey === item._key"
+          :borderState="chooseFriendKey === item._key"
+        />
+      </el-badge>
       <div class="name" v-if="chooseFriendKey === item._key">
         {{ item.userName }}
       </div>
@@ -110,7 +126,7 @@ watch(
     <div class="container">
       <div class="friend-date diary-date">
         <el-date-picker
-          v-model="diaryDate"
+          v-model="chooseDate"
           type="date"
           placeholder="Pick a day"
           format="MM月DD日"
@@ -129,7 +145,7 @@ watch(
         </el-date-picker>
       </div>
       <template v-for="diaryItem in diaryFriendList" :key="diaryItem._key">
-        <DiaryItem :info="diaryItem" />
+        <DiaryItem :info="diaryItem" :friendKey="chooseFriendKey"/>
       </template>
     </div>
   </div>

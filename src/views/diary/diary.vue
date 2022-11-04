@@ -8,9 +8,9 @@ import "./diary.scss";
 import api from "@/services/api";
 import { ResultProps } from "@/interface/Common";
 const { user, token } = storeToRefs(appStore.authStore);
-const { diaryDate } = storeToRefs(appStore.commonStore);
+const { chooseDate,chooseMonth } = storeToRefs(appStore.commonStore);
 
-const { setDate } = appStore.commonStore;
+const { setDate ,setMonth} = appStore.commonStore;
 const { diaryList, page, total, diaryMonth } = storeToRefs(appStore.diaryStore);
 const { getDiaryList, setPage, getDiaryMonth } = appStore.diaryStore;
 const day: any = inject("dayjs");
@@ -23,7 +23,7 @@ onMounted(() => {
   getFriendDiaryNum();
 });
 const toEditor = () => {
-  router.push("/home/detail/create?date=" + day(diaryDate.value).valueOf());
+  router.push("/home/detail/create?date=" + day(chooseDate.value).valueOf());
 };
 const toUrl = (url) => {
   router.push(url);
@@ -50,9 +50,10 @@ const scrollDiary = (e: any) => {
   }
 };
 const hasDiary = ({ dayjs }) => {
+  console.log(diaryMonth.value.indexOf(dayjs.format("DD")) !== -1)
   return (
-    diaryMonth.value.includes(dayjs.format("DD")) &&
-    dayjs.month() === day(diaryDate.value).month()
+    diaryMonth.value.indexOf(dayjs.format("DD")) !== -1 &&
+    dayjs.month() === day(chooseMonth.value).month()
   );
 };
 const handlechangeDate = (val) => {
@@ -65,13 +66,19 @@ const handlechangeDate = (val) => {
   setDate(day(val).startOf("day").valueOf());
 };
 const handlechangePanel = (date) => {
+  setMonth(day(date).startOf("month").startOf("day").valueOf());
   getDiaryMonth("",day(date).startOf("month").startOf("day").valueOf());
 };
+const toFriendDiary=()=>{
+  toUrl('/home/friendDiary')
+  setDate(day().startOf("day").valueOf());
+  setMonth(day().startOf("month").startOf("day").valueOf());
+}
 watch(page, (newVal) => {
   getDiaryList(newVal);
 });
 watch(
-  diaryDate,
+  chooseDate,
   (newVal) => {
     targetDate.value = day(newVal).format("MM月DD日");
   },
@@ -87,7 +94,7 @@ watch(
       </div> -->
       <div class="diary-date">
         <el-date-picker
-          v-model="diaryDate"
+          v-model="chooseDate"
           type="date"
           placeholder="Pick a day"
           format="MM月DD日"
@@ -110,7 +117,7 @@ watch(
       <el-badge
         :value="friendDiaryNum"
         :hidden="friendDiaryNum === 0"
-        @click="toUrl('/home/friendDiary')"
+        @click="toFriendDiary()"
       >
         <iconpark-icon name="message" :size="30" style="cursor: pointer" />
       </el-badge>

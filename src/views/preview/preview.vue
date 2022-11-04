@@ -9,6 +9,7 @@ import { MoreFilled } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import { storeToRefs } from "pinia";
 const { statusHeight, navigationHeight } = storeToRefs(appStore.commonStore);
+const { user } = storeToRefs(appStore.authStore);
 const { diaryDetail } = storeToRefs(appStore.diaryStore);
 const { getDiaryDetail, setDiaryDetail } = appStore.diaryStore;
 const dayjs: any = inject("dayjs");
@@ -66,7 +67,7 @@ const deleteDiary = async () => {
     :style="{
       height:
         statusHeight && navigationHeight
-          ? `calc(100vh - ${+statusHeight + +navigationHeight  + 30}px)`
+          ? `calc(100vh - ${+statusHeight + +navigationHeight + 30}px)`
           : `calc(100vh - 85px)`,
     }"
   >
@@ -98,6 +99,7 @@ const deleteDiary = async () => {
       style="cursor: pointer"
       class="edit-button"
       @click="toEditor"
+      v-if="user?._key === diaryDetail?.userKey"
     />
   </div>
   <el-dialog v-model="deleteVisible" title="Tips" width="30%">

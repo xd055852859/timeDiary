@@ -8,9 +8,13 @@
     "loginError": "登录失效,请重新登录",
     "logoutMessage": "退出登录成功"
   },
-  "detail": {
+  "editor": {
     "title": "请输入标题",
     "text": "请输入文字，或使用 / 选择功能",
+    "characterCount": "个字",
+    "img":"图片预览"
+  },
+  "detail": {
     "weather": "天气",
     "location": "位置",
     "shareTo": "日记共享",
