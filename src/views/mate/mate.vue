@@ -8,13 +8,22 @@ import { ResultProps } from "@/interface/Common";
 import i18n from "@/language/i18n";
 import { storeToRefs } from "pinia";
 import appStore from "@/store";
+import { Mate } from "@/interface/Mate";
 const { mateList } = storeToRefs(appStore.mateStore);
 const { getMate } = appStore.mateStore;
+const searchName = ref<string>("");
+const inputVisible = ref<boolean>(false);
+const searchList = computed(() =>
+  mateList.value.filter((item) => {
+    return item.userName.indexOf(searchName.value) !== -1;
+  })
+);
+
 const toAddMate = () => {
   router.push("/home/addMate");
 };
 onMounted(() => {
-  console.log(getMate)
+  console.log(getMate);
   getMate();
 });
 </script>
@@ -22,12 +31,19 @@ onMounted(() => {
   <cheader isMenu>
     <template #title>{{ $t("userCenter.mate") }}</template>
     <template #right>
-      <!-- <iconpark-icon
+      <el-input
+        v-model="searchName"
+        size="large"
+        :placeholder="$t('mate.mateInput')"
+        v-if="inputVisible"
+        style="margin-right: 10px"
+      />
+      <cicon
         name="search"
         :size="30"
         style="cursor: pointer; margin-right: 10px"
-      /> -->
-
+        @click="inputVisible = true"
+      />
       <el-icon :size="30" @click="toAddMate"><Plus /></el-icon>
     </template>
   </cheader>
@@ -39,10 +55,10 @@ onMounted(() => {
         :md="4"
         :lg="3"
         :xl="1"
-        v-for="item in mateList"
+        v-for="item in searchList"
         :key="item._key"
       >
-        <div class="item">
+        <div class="item" @click="$router.push(`/home/mateBoard/${item._key}`)">
           <avatar
             :name="item.userName"
             :avatar="item.userAvatar"

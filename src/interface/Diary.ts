@@ -1,4 +1,4 @@
-import { Person } from "./User";
+import { Person, User } from "./User";
 export interface Diary {
   _key: string;
   title?: string;
@@ -16,5 +16,22 @@ export interface Diary {
   weather?: string;
   location?: string;
   imageList?: string[];
-  sharers?: Person[];
+  sharers?: {
+    userAvatar: string;
+    userName: string;
+    _key: string;
+    hasRead: boolean;
+  }[];
+}
+export interface Comment {
+  cardKey: string;
+  content: string;
+  createTime: number;
+  creatorInfo: User;
+  userKey: string;
+  _key: string;
+  targetCommentKey: null | string;
+  targetContent: null | string;
+  targetUser: null | string;
+  targetUserInfo: null | User;
 }

@@ -1,6 +1,6 @@
 .diary-preview {
-  padding-top: 30px;
-  margin-bottom: 30px;
+  padding-bottom: 30px;
+  background-color: var(--diary-diary-color);
   .date {
     width: 100%;
     height: 50px;
@@ -38,6 +38,32 @@
     @include scroll();
     border-radius: 6px;
     box-shadow: 0px 1px 3px 0px rgba(182, 182, 182, 0.5);
+    @include p-number(15px, 15px);
+    .share {
+      width: 100%;
+      height: 70px;
+      color: var(--diary-font-time);
+      font-size: 14px;
+      @include flex(space-between, center, null);
+      .share-avatar {
+        height: 70px;
+        @include flex(flex-end, center, null);
+      }
+    }
+    .next {
+      width: 100%;
+      color: var(--diary-font-time);
+      font-size: 14px;
+      cursor: pointer;
+      @include flex(flex-end, center, null);
+    }
+  }
+  .input {
+    width: 100%;
+    height: 60px;
+    margin-top: 15px;
+    @include p-number(10px, 8px);
+    @include flex(null, center, null);
   }
   .edit-button {
     position: fixed;

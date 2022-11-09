@@ -94,7 +94,7 @@ defineExpose({
       "
     >
       <template v-if="item.title !== 'img'">
-        <iconpark-icon :name="item.title" :size="26" />
+        <cicon :name="item.title" :size="26" />
         <div class="title">{{ item.title }}</div>
       </template>
       <template v-else>
@@ -104,7 +104,7 @@ defineExpose({
           @change="chooseImg($event, index)"
           class="upload-img"
         />
-        <iconpark-icon name="image" :size="26" />
+        <cicon name="image" :size="26" />
         <div class="title">{{ item.title }}</div>
       </template>
     </div>

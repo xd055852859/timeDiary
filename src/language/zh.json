@@ -6,13 +6,25 @@
   "common": {
     "login": "登录",
     "loginError": "登录失效,请重新登录",
-    "logoutMessage": "退出登录成功"
+    "logoutSuccess": "退出登录成功"
   },
   "editor": {
     "title": "请输入标题",
     "text": "请输入文字，或使用 / 选择功能",
     "characterCount": "个字",
-    "img":"图片预览"
+    "img": "图片预览"
+  },
+  "weather": {
+    "fog": "雾",
+    "sunny": "晴",
+    "cloudy": "多云",
+    "windy": "风",
+    "rainy": "雨",
+    "thunderstorm": "雷雨",
+    "snowy": "雪",
+    "partlyCloudy": "多云转晴",
+    "haily": "冰雹",
+    "sandy": "沙尘"
   },
   "detail": {
     "weather": "天气",
@@ -29,25 +41,48 @@
     "isPublic": "设为漂流",
     "deleteTips": "删除提示",
     "deleteText": "请确认是否删除该日记",
-    "deleteMessage": "删除成功"
+    "deleteMessage": "删除成功",
+    "share": "共享",
+    "comment": "评论",
+    "commentInput": "我来说一说~",
+    "commentText": "评论成功",
+    "deleteCommentTips": "删除评论提示",
+    "deleteCommentText": "请确认是否删除该评论(回复该评论的留言将一起被删除)",
+    "deleteCommentSuccess": "删除评论成功"
   },
   "userCenter": {
     "diary": "首页",
     "gallery": "图库",
     "drift": "漂流日记",
     "mate": "亲友",
-    "sun": "日间",
-    "moon": "夜间",
+    "sun": "高亮",
+    "moon": "暗黑",
     "set": "设置",
-    "quit": "退出"
+    "quit": "退出",
+    "language": "语言",
+    "mode": "模式"
   },
   "mate": {
     "addMate": "加亲友",
     "addButton": "绑定",
     "addInput": "请输入亲友id",
     "inviteCode": "我的邀请码",
-    "addMateText": "添加友成功,请等待好友确认",
-    "addMateError": "请输入亲友id"
+    "addMateSuccess": "添加友成功,请等待好友确认",
+    "addMateError": "请输入亲友id",
+    "mateInput": "请输入亲友名"
+  },
+  "mateBoard": {
+    "header": "我和TA",
+    "title": "我们开始共享时光日记",
+    "stopShareTitle": "停止继续分享",
+    "stopShareText": "对方将不出现在日记分享列表中",
+    "hideShareTitle": "隐藏已分享",
+    "hideShareText": "已分享给对面的文章,对方将不可见",
+    "shareSuccess": "设置成功",
+    "unfriend": "解除关系",
+    "unfriendTip": "解除关系提示",
+    "unfriendText": "是否与该好友解除关系",
+    "unfriendSuccess": "解除关系成功"
   },
   "message": {
     "message": "通知",
@@ -62,7 +97,10 @@
     "handleAgree": "已同意",
     "handleRefuse": "已拒绝"
   },
-  "friendDiary": {
-    "friendDiary": "亲友日记"
+  "mateDiary": {
+    "mateDiary": "亲友日记"
+  },
+  "homeDiary": {
+    "homeDiary": "探索日记"
   }
 }

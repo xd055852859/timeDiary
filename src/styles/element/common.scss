@@ -2,5 +2,9 @@
   padding: 0px !important;
 }
 .p10-drawer .el-drawer__body {
-  padding: 10px 5px 10px 10px!important;
+  padding: 10px 5px 10px 10px !important;
+}
+.el-drawer__header {
+  color: var(--diary-font-color);
+  margin-bottom: 10px !important;
 }

@@ -9,7 +9,7 @@ import { getSearchParamValue } from "@/services/util";
 
 // 使用setup模式定义
 export const commonStore = defineStore("commonStore", () => {
-  const deviceType = ref<string>("");
+  const deviceType = ref<string>("computer");
 
   const locale = ref<string>("");
   const chooseDate = ref<number>(dayjs().valueOf());

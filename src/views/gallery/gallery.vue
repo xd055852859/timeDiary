@@ -2,10 +2,18 @@
 import { ResultProps } from "@/interface/Common";
 import api from "@/services/api";
 import { ElMessage } from "element-plus";
+import cwaterfall from "@/components/cwaterfall.vue";
 const dayjs: any = inject("dayjs");
 interface Gallery {
-  ctime: string;
-  group: string[];
+  cardKey: string;
+  cardTitle: string;
+  createTime: number;
+  fileSize: number;
+  height: null | number;
+  storyTime: number;
+  url: string;
+  width: null | number;
+  _key: string;
 }
 const galleryList = ref<Gallery[]>([]);
 
@@ -14,16 +22,16 @@ const total = ref<number>(0);
 const imgVisible = ref<boolean>(false);
 const imgIndex = ref<number>(0);
 const groupIndex = ref<number>(0);
-const imgList = computed(() => galleryList.value[groupIndex.value].group);
+const imgList: any = computed(() => galleryList.value.map((item) => item.url));
 const imgSrc = computed(() => imgList.value[imgIndex.value]);
 onMounted(() => {
   getGalleryList(1);
 });
 const getGalleryList = async (page: number, friendKey?: string) => {
-  const galleryRes = (await api.request.get("/card/imageList", {
+  const galleryRes = (await api.request.get("card/imageList/new", {
     friendKey: friendKey,
     page: page,
-    limit: 10,
+    limit: 100,
   })) as ResultProps;
   if (galleryRes.msg === "OK") {
     if (page === 1) {
@@ -67,17 +75,17 @@ const toRight = () => {
     <template #right></template>
   </cheader>
   <div class="gallery box" @scroll="scrollGallery">
-    <template
+    <!-- <template
       v-for="(galleryItem, galleryIndex) in galleryList"
       :key="'gallery' + galleryIndex"
-    >
-      <div class="date">
+    > -->
+      <!-- <div class="date">
         <span class="day">{{ dayjs(galleryItem.ctime).date() }}</span>
         <span class="year">{{
           dayjs(galleryItem.ctime).format("MM.YYYY")
         }}</span>
-      </div>
-      <div class="img-box">
+      </div> -->
+      <!-- <div class="img-box">
         <el-row :gutter="20" class="row">
           <el-col
             :xs="8"
@@ -93,8 +101,18 @@ const toRight = () => {
             </div>
           </el-col>
         </el-row>
-      </div>
-    </template>
+      </div> -->
+      <cwaterfall
+        :list="imgList"
+        it="fileUrl"
+        :marginRight="20"
+        :marginBottom="10"
+        :padding="0"
+        :column="4"
+        v-if="imgList.length > 0"
+      />
+      <!-- @click="showImage" -->
+    <!-- </template> -->
   </div>
   <el-dialog
     v-model="imgVisible"
@@ -114,7 +132,7 @@ const toRight = () => {
   >
     <div class="img-fullImg dp-space-center">
       <div style="width: 10vw" class="dp-center-center">
-        <iconpark-icon
+        <cicon
           name="back"
           :size="50"
           color="#333"
@@ -123,10 +141,19 @@ const toRight = () => {
           v-if="imgIndex !== 0"
         />
       </div>
-      <div class="img-box"><img :src="imgSrc" alt="" /></div>
+      <div class="img-box">
+        <img
+          :src="
+            imgSrc.indexOf('.svg') !== -1
+              ? imgSrc
+              : `${imgSrc}?imageView2/1/w/200/h/200`
+          "
+          alt=""
+        />
+      </div>
 
       <div style="width: 10vw" class="dp-center-center">
-        <iconpark-icon
+        <cicon
           name="rightArrow"
           :size="50"
           color="#333"

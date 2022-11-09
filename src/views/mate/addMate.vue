@@ -20,7 +20,7 @@ const addMate = async () => {
   })) as ResultProps;
   if (addRes.msg === "OK") {
     ElMessage({
-      message: i18n.global.t(`mate.addMateText`),
+      message: i18n.global.t(`mate.addMateSuccess`),
       type: "success",
       duration: 1000,
     });
@@ -43,7 +43,7 @@ const addMate = async () => {
           {{ $t("mate.inviteCode") }} : {{ user?._key }}
         </div>
         <div class="dp--center" style="width: 150px">
-          <iconpark-icon
+          <cicon
             name="copy"
             :size="25"
             style="cursor: pointer; margin-right: 5px"

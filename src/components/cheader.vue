@@ -42,7 +42,7 @@ const back = () => {
 };
 </script>
 <template>
-  <!-- <iconpark-icon
+  <!-- <cicon
               :name="fullVisible ? 'off-screen' : 'full-screen'"
               :size="30"
               color="#fff"
@@ -67,17 +67,15 @@ const back = () => {
         style="cursor: pointer"
         v-if="headerIcon"
       /> -->
-
-      <iconpark-icon
+      <cicon
         name="menu"
         :size="25"
-        color="#333"
         @click="userVisible = true"
         style="cursor: pointer"
         v-if="isMenu"
       />
       <!--    @mouseenter="headerState ? emits('headerClick') : (userVisible = true)" -->
-      <iconpark-icon
+      <cicon
         name="back"
         :size="25"
         @click="clickState ? emits('clickBack') : back()"

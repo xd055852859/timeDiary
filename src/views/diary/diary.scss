@@ -1,4 +1,5 @@
 .diary {
+  background-color: var(--diary-diary-color);
   .add-button {
     position: fixed;
     right: 30px;
@@ -27,6 +28,10 @@
 }
 .cell.current .text {
   background: var(--el-color-primary);
+  color: #fff;
+}
+.cell.target .text {
+  background: var(--el-color-danger);
   color: #fff;
 }
 .cell .holiday {

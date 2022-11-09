@@ -54,6 +54,7 @@ export const uploadFile = async (
     alert("无文件");
     return;
   }
+  console.log(file);
   if (file.size > 20000000) {
     alert("文件不能大于20M,请重新选择");
     return;
@@ -98,16 +99,25 @@ export const uploadFile = async (
           console.log(domain + res.key);
 
           callback(domain + res.key);
-          let obj: any = {
-            fileSize: file.size,
-            url: domain + res.key,
+
+          let image = new Image();
+          // aImg.src = newImageList[index][key];
+          image.src = domain + res.key;
+
+          image.onload = (img) => {
+            let obj: any = {
+              fileSize: file.size,
+              url: domain + res.key,
+              width: image.width,
+              height: image.height,
+            };
+            if (key) {
+              obj.cardKey = key;
+            }
+            api.request.post("qiniu", {
+              ...obj,
+            });
           };
-          if (key) {
-            obj.cardKey = key;
-          }
-          api.request.post("qiniu", {
-            ...obj,
-          });
           //return domain + res.key;
         },
       };

@@ -66,7 +66,7 @@ onBeforeMount(() => {
     setDark(false);
   }
 
-  if (deviceType) {
+  if (deviceType||is_mobile()) {
     setDeviceType("mobile");
   }
   proxy.$i18n.locale = localStorage.getItem("LANGUAGE")
@@ -151,11 +151,11 @@ watch(
 }
 
 *::-webkit-scrollbar-thumb {
-  background: var(--el-color-success);
+  background: var(--diary-font-color);
   border-radius: 100px;
 }
 .common-color {
-  color: var(--el-color-success) !important;
+  color: #3C9915 !important;
 }
 // .container {
 //   padding: 10px;

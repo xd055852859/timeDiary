@@ -1,0 +1,24 @@
+.home-diary-header {
+  width: 100vw;
+  height: 20vh;
+  position: relative;
+  z-index: 2;
+  background: #86b885;
+  .bg {
+    height: 20vh;
+  }
+  .home-diary-avatar {
+    position: absolute;
+    right: 20px;
+    bottom: -80px;
+    z-index: 2;
+    .name {
+      font-size: 18px;
+      text-align: center;
+      color: var(--diary-font-summary);
+    }
+  }
+}
+.home-diary {
+  background-color: var(--diary-diary-color);
+}

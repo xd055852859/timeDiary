@@ -28,18 +28,44 @@ const timer = ref<number | null>(null);
 const targetDate = ref<number>(0);
 const saveState = ref<number>(0);
 const shareVisible = ref<boolean>(false);
+const weatherVisible = ref<boolean>(false);
+const imgSrc = ref<string>("");
+// const testText = ref<string>("测试key");
+const weatherArray = [
+  "fog",
+  "sunny",
+  "cloudy",
+  "windy",
+  "rainy",
+  "thunderstorm",
+  "snowy",
+  "partlyCloudy",
+  "haily",
+  "sandy",
+];
 onMounted(() => {
   diaryKey.value =
     route.params.id !== "create" ? (route.params.id as string) : "";
   if (diaryKey.value) {
     getDiaryDetail(diaryKey.value as string);
+    //@ts-ignore
+    if (window.webkit) {
+      //@ts-ignore
+      window.webkit.messageHandlers.returnCardKey.postMessage(diaryKey.value);
+      // testText.value = "编辑" + diaryKey.value;
+    }
   }
   getTime();
   getFilterMate(0, 1);
   timer.value = setInterval(() => {
     handleSave("auto");
   }, 3000);
+  //
 });
+(window as any).getPhoneImage = (file: any) => {
+  // alert("测试" + editState)
+  imgSrc.value = file;
+};
 onUnmounted(() => {
   if (timer.value) {
     clearInterval(timer.value);
@@ -51,6 +77,7 @@ const getTime = () => {
     ? window.location.search.split("?")[1]
     : window.location.hash.split("?")[1];
   targetDate.value = +(getSearchParamValue(search, "date") as string);
+  console.log(targetDate.value);
 };
 const handleSave = async (type?: string) => {
   if (editorRef.value) {
@@ -82,6 +109,14 @@ const handleSave = async (type?: string) => {
           ...obj,
         })) as ResultProps;
         if (postRes.msg === "OK") {
+          //@ts-ignore
+          if (window.webkit) {
+            //@ts-ignore
+            window.webkit.messageHandlers.returnCardKey.postMessage(
+              postRes.data._key
+            );
+            // testText.value = "创建" + postRes.data._key;
+          }
           saveState.value = 2;
           setImageList([]);
           router.push(
@@ -109,6 +144,14 @@ const handleSetSave = async (
       [key]: value,
     })) as ResultProps;
     if (postRes.msg === "OK") {
+      //@ts-ignore
+      if (window.webkit) {
+        //@ts-ignore
+        window.webkit.messageHandlers.returnCardKey.postMessage(
+          postRes.data._key
+        );
+        // testText.value = "创建" + postRes.data._key;
+      }
       router.push(`/home/detail/${postRes.data._key}?date=` + targetDate.value);
     }
   }
@@ -137,7 +180,11 @@ watch(diaryDetail, (newVal) => {
 });
 </script>
 <template>
-  <cheader @clickBack="clickBack" clickState>
+  <cheader
+    @clickBack="clickBack"
+    clickState
+    :headerStyle="{ backgroundColor: 'var(--diary-diary-color)' }"
+  >
     <template #title>{{ dayjs(targetDate).format("MM月DD日") }}</template>
     <template #right
       ><div style="color: var(--diary-font-time); font-size: 14px">
@@ -151,13 +198,15 @@ watch(diaryDetail, (newVal) => {
       </div></template
     >
   </cheader>
+  <!-- <div>{{ testText }}</div> -->
+  <!-- <img :src="imgSrc" alt="" v-if="imgSrc" style="width: 300px; height: 300px" /> -->
   <div
     class="diary-editor box"
     :style="{
       height:
         statusHeight && navigationHeight
-          ? `calc(100vh - ${+statusHeight + +navigationHeight + 30}px)`
-          : `calc(100vh - 85px)`,
+          ? `calc(100vh - ${+statusHeight + +navigationHeight}px)`
+          : `calc(100vh - 55px)`,
     }"
   >
     <div class="editor">
@@ -169,46 +218,52 @@ watch(diaryDetail, (newVal) => {
       />
     </div>
     <div class="set">
-      <div class="item">
+      <div class="item" @click="weatherVisible = true">
         <div class="dp--center">
-          <iconpark-icon
+          <cicon
             name="weather"
             :size="20"
-            style="margin-right: 5px"
+            style="margin-right: 5px; color: var(--diary-font-time)"
           />{{ $t("detail.weather") }}
         </div>
-        <div>
-          {{ weather }}
-          <iconpark-icon
+        <div class="dp-center-center">
+          <cicon
+            :name="weather"
+            :size="20"
+            style="margin-right: 5px; color: var(--diary-font-time)"
+            v-if="weather"
+          />
+          <div v-if="weather">{{ $t(`weather.${weather}`) }}</div>
+          <cicon
             name="rightArrow"
             :size="18"
-            style="margin-left: 5px"
+            style="margin-left: 5px; color: var(--diary-font-time)"
           />
         </div>
       </div>
       <div class="item">
         <div class="dp--center">
-          <iconpark-icon
+          <cicon
             name="location"
             :size="20"
-            style="margin-right: 5px"
+            style="margin-right: 5px; color: var(--diary-font-time)"
           />{{ $t("detail.location") }}
         </div>
         <div>
           {{ location }}
-          <iconpark-icon
+          <cicon
             name="rightArrow"
             :size="18"
-            style="margin-left: 5px"
+            style="margin-left: 5px; color: var(--diary-font-time)"
           />
         </div>
       </div>
       <div class="item" @click="shareVisible = true">
         <div class="dp--center">
-          <iconpark-icon
+          <cicon
             name="shareTo"
             :size="20"
-            style="margin-right: 5px"
+            style="margin-right: 5px; color: var(--diary-font-time)"
           />{{ $t("detail.shareTo") }}
         </div>
         <div class="dp--center">
@@ -224,19 +279,19 @@ watch(diaryDetail, (newVal) => {
               marginRight: '3px',
             }"
           />
-          <iconpark-icon
+          <cicon
             name="rightArrow"
             :size="18"
-            style="margin-left: 2px"
+            style="margin-left: 2px; color: var(--diary-font-time)"
           />
         </div>
       </div>
       <div class="item">
         <div class="dp--center">
-          <iconpark-icon
+          <cicon
             name="isPublic"
             :size="20"
-            style="margin-right: 5px"
+            style="margin-right: 5px; color: var(--diary-font-time)"
           />{{ $t("detail.isPublic") }}
         </div>
         <el-switch
@@ -282,7 +337,7 @@ watch(diaryDetail, (newVal) => {
                 :borderState="shareTo.indexOf(item._key) !== -1"
               />
               <div class="name">{{ item.userName }}</div>
-              <iconpark-icon
+              <cicon
                 name="chooseShare"
                 color="#3C9915"
                 :size="25"
@@ -292,6 +347,37 @@ watch(diaryDetail, (newVal) => {
             </div>
           </el-col>
         </el-row>
+      </div>
+    </el-drawer>
+    <el-drawer
+      v-model="weatherVisible"
+      direction="btt"
+      size="50%"
+      @close="
+        () => {
+          handleSetSave('weather', weather);
+          weatherVisible = false;
+        }
+      "
+    >
+      <div class="weather-box">
+        <div
+          v-for="item in weatherArray"
+          :key="item"
+          class="item"
+          @click="
+            weather = item;
+            weatherVisible = false;
+            handleSetSave('weather', item);
+          "
+        >
+          <cicon
+            :name="item"
+            :size="50"
+            style="margin-right: 5px; color: var(--diary-font-time)"
+          />
+          <div class="title">{{ $t(`weather.${item}`) }}</div>
+        </div>
       </div>
     </el-drawer>
   </div>

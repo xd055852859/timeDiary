@@ -12,15 +12,7 @@ const props = defineProps<{
   type?: string;
 }>();
 const toDetail = () => {
-  if (props.type || props.friendKey) {
-    router.push(`/home/preview/${props.info._key}`);
-  } else {
-    router.push(
-      `/home/detail/${props.info._key}?date=${dayjs(
-        props.info.storyTime
-      ).valueOf()}`
-    );
-  }
+  router.push(`/home/preview/${props.info._key}`);
 };
 </script>
 <template>
@@ -40,7 +32,14 @@ const toDetail = () => {
           class="item"
           :key="info._key + 'image' + index"
         >
-          <img :src="item" alt="" />
+          <img
+            :src="
+              item.indexOf('.svg') !== -1
+                ? item
+                : `${item}?imageView2/1/w/150/h/150`
+            "
+            alt=""
+          />
         </div>
       </div>
       <div class="time">{{ dayjs(info.storyTime).format("HH:mm") }}</div>

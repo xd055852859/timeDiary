@@ -26,36 +26,8 @@ const userName = ref<string>("");
 const email = ref<string>("");
 const setVisible = ref<boolean>(false);
 const localeValue = ref<string>("");
-const darkValue = ref<string>("");
+const darkState = ref<boolean>(false);
 
-const changeLanguage = (value: string) => {
-  switch (value) {
-    case "中文":
-      value = "zh";
-      darkValue.value = dark.value ? "黑暗模式" : "明亮模式";
-      break;
-    case "English":
-      value = "en";
-      darkValue.value = dark.value ? "Dark mode" : "Bright mode";
-      break;
-    case "日本語":
-      value = "ja";
-      darkValue.value = dark.value ? "ダークモード" : "ブライトモード";
-      break;
-    case "繁体":
-      value = "tc";
-      darkValue.value = dark.value ? "黑暗模式" : "明亮模式";
-      break;
-  }
-  proxy.$i18n.locale = value;
-  setCommonLocale(value);
-  localStorage.setItem("LANGUAGE", value);
-};
-const changeDark = (value: string | boolean) => {
-  value = value === i18n.global.t(`DarkMode`);
-  setDark(value);
-  setCommonDark(value);
-};
 const changeConfig = async () => {
   let config = {
     userAvatar: avatar.value,
@@ -85,7 +57,7 @@ const logout = () => {
   router.push("/");
   localStorage.clear();
   ElMessage({
-    message: i18n.global.t(`common.logoutMessage`),
+    message: i18n.global.t(`common.logoutSuccess`),
     type: "success",
     duration: 1000,
   });
@@ -93,29 +65,23 @@ const logout = () => {
 const toUrl = (url) => {
   router.push(url);
 };
+watch(darkState, (newVal) => {
+  setDark(newVal);
+  setCommonDark(newVal);
+});
+watch(localeValue, (newVal) => {
+  proxy.$i18n.locale = newVal;
+  setCommonLocale(newVal);
+  localStorage.setItem("LANGUAGE", newVal);
+});
 watch(
   user,
   (newVal) => {
     if (newVal) {
       avatar.value = newVal.userAvatar ? newVal.userAvatar : "";
       userName.value = newVal.userName ? newVal.userName : "";
-      switch (locale.value) {
-        case "zh":
-          localeValue.value = "中文";
-          break;
-        case "en":
-          localeValue.value = "English";
-          break;
-        case "ja":
-          localeValue.value = "日本語";
-          break;
-        case "tc":
-          localeValue.value = "繁体";
-          break;
-      }
-      darkValue.value = dark.value
-        ? i18n.global.t(`DarkMode`)
-        : i18n.global.t(`BrightMode`);
+      localeValue.value = locale.value;
+      darkState.value = dark.value;
     }
   },
   { immediate: true }
@@ -133,8 +99,11 @@ watch(
           class="icon-point"
         />
         <div class="name single-to-long">{{ user?.userName }}</div>
-        <div class="dp-center-center notice-icon" @click="toUrl('/home/notice')">
-          <iconpark-icon name="ring" :size="20" style="margin-right: 10px" />
+        <div
+          class="dp-center-center notice-icon"
+          @click="toUrl('/home/notice')"
+        >
+          <cicon name="ring" :size="20" style="margin-right: 10px" />
           <!-- <el-badge
             :value="noticeNum"
             style="margin-bottom: 10px; margin-left: -10px"
@@ -150,7 +119,12 @@ watch(
         class="userCenter-item dp--center"
         @click="$router.push('/home/diary')"
       >
-        <iconpark-icon name="diary" :size="20" style="margin-right: 10px" />
+        <cicon
+          name="diary"
+          :size="20"
+          style="margin-right: 10px"
+          :color="$route.name === 'diary' ? '#3C9915' : ''"
+        />
         <span :class="{ 'common-color': $route.name === 'diary' }">
           {{ $t(`userCenter.diary`) }}
         </span>
@@ -159,7 +133,12 @@ watch(
         class="userCenter-item dp--center"
         @click="$router.push('/home/gallery')"
       >
-        <iconpark-icon name="gallery" :size="20" style="margin-right: 10px" />
+        <cicon
+          name="gallery"
+          :size="20"
+          style="margin-right: 10px"
+          :color="$route.name === 'gallery' ? '#3C9915' : ''"
+        />
         <span :class="{ 'common-color': $route.name === 'gallery' }">
           {{ $t(`userCenter.gallery`) }}
         </span>
@@ -168,7 +147,12 @@ watch(
         class="userCenter-item dp--center"
         @click="$router.push('/home/drift')"
       >
-        <iconpark-icon name="drift" :size="20" style="margin-right: 10px" />
+        <cicon
+          name="drift"
+          :size="20"
+          style="margin-right: 10px"
+          :color="$route.name === 'drift' ? '#3C9915' : ''"
+        />
 
         <span :class="{ 'common-color': $route.name === 'drift' }">
           {{ $t(`userCenter.drift`) }}
@@ -181,7 +165,12 @@ watch(
           emits('close');
         "
       >
-        <iconpark-icon name="mate" :size="20" style="margin-right: 10px" />
+        <cicon
+          name="mate"
+          :size="20"
+          style="margin-right: 10px"
+          :color="$route.name === 'mate' ? '#3C9915' : ''"
+        />
         <span :class="{ 'common-color': $route.name === 'mate' }">
           {{ $t(`userCenter.mate`) }}
         </span>
@@ -198,24 +187,31 @@ watch(
       </div> -->
     </div>
     <div class="user-set">
-      <div class="userCenter-item dp--center" @click="setVisible = true">
-        <iconpark-icon name="sun" :size="20" style="margin-right: 10px" />
-        <span>
-          {{ $t(`userCenter.sun`) }}
-        </span>
+      <div class="userCenter-item dp-space-center">
+        <div class="dp-center-center">
+          <cicon
+            :name="darkState ? 'moon' : 'sun'"
+            :size="20"
+            style="margin-right: 10px"
+          />
+          <span>
+            {{ darkState ? $t(`userCenter.moon`) : $t(`userCenter.sun`) }}
+          </span>
+        </div>
+        <el-switch v-model="darkState" />
       </div>
-      <div class="userCenter-item dp--center">
-        <iconpark-icon name="set" :size="20" style="margin-right: 10px" />
+      <div class="userCenter-item dp--center" @click="setVisible = true">
+        <cicon name="set" :size="20" style="margin-right: 10px" />
         <span>
           {{ $t(`userCenter.set`) }}
         </span>
       </div>
       <div class="userCenter-item dp--center">
-        <iconpark-icon name="pro" :size="20" style="margin-right: 10px" />
+        <cicon name="pro" :size="20" style="margin-right: 10px" />
         <span> Pro </span>
       </div>
       <div class="userCenter-item dp--center" @click="logout">
-        <iconpark-icon name="quit" :size="20" style="margin-right: 10px" />
+        <cicon name="quit" :size="20" style="margin-right: 10px" />
         <span>
           {{ $t(`userCenter.quit`) }}
         </span>
@@ -248,35 +244,20 @@ watch(
       </span>
     </template>
   </el-dialog>
-  <el-dialog v-model="setVisible" :title="$t(`Setting`)" :width="400">
+  <el-dialog v-model="setVisible" :title="$t(`userCenter.set`)" :width="400">
     <div class="user-edit dp-center-center">
       <div class="text dp-space-center">
-        {{ $t(`Language`) }} :
-        <el-select
-          v-model="localeValue"
-          :placeholder="'choose language'"
-          size="large"
-          @change="changeLanguage"
-        >
-          <el-option value="中文">中文</el-option>
-          <el-option value="English">English</el-option>
+        {{ $t(`userCenter.language`) }} :
+        <el-select v-model="localeValue" size="large">
+          <el-option value="zh" label="中文" />
+          <el-option value="en" label="English" />
           <!-- <el-option value="日本語">日本語</el-option> -->
-          <el-option value="繁体">繁体</el-option>
+          <el-option value="tc" label="繁体" />
         </el-select>
       </div>
       <div class="text dp-space-center">
-        {{ $t(`DarkMode`) }}
-        <el-select
-          v-model="darkValue"
-          :placeholder="'choose mode'"
-          size="large"
-          @change="changeDark"
-        >
-          <el-option :value="$t(`DarkMode`)">{{ $t(`DarkMode`) }}</el-option>
-          <el-option :value="$t(`BrightMode`)"
-            >{{ $t(`BrightMode`) }}
-          </el-option>
-        </el-select>
+        {{ $t(`userCenter.mode`) }}
+        <el-switch v-model="darkState" />
       </div>
     </div>
   </el-dialog>

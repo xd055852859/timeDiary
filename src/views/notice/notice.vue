@@ -69,7 +69,7 @@ watchEffect(() => {
   <cheader isMenu>
     <template #title>{{ $t("message.message") }}</template>
     <template #right>
-      <!-- <iconpark-icon
+      <!-- <cicon
         name="search"
         :size="30"
         style="cursor: pointer; margin-right: 10px"
@@ -88,8 +88,8 @@ watchEffect(() => {
             :style="
               noticeType === 0
                 ? {
-                    color: 'var(--el-color-primary)',
-                    borderBottom: '3px solid var(--el-color-primary)',
+                    color: '#3C9915',
+                    borderBottom: '3px solid #3C9915',
                   }
                 : {}
             "
@@ -106,8 +106,8 @@ watchEffect(() => {
             :style="
               noticeType === 1
                 ? {
-                    color: 'var(--el-color-primary)',
-                    borderBottom: '3px solid var(--el-color-primary)',
+                    color: '#3C9915',
+                    borderBottom: '3px solid #3C9915',
                   }
                 : {}
             "

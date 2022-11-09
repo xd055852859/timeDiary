@@ -9,7 +9,7 @@
 .home {
   width: 100%;
   height: 100vh;
-  background: var(--talk-bg-color);
+  background: var(--diary-bg-color);
   flex-wrap: wrap;
   align-content: flex-start;
 }

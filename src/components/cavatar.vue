@@ -2,7 +2,7 @@
 import appStore from "@/store";
 import { ElMessage } from "element-plus";
 import { storeToRefs } from "pinia";
-const { user } = storeToRefs(appStore.authStore);
+
 const props = defineProps<{
   avatarKey?: string;
   avatar?: string;
@@ -39,8 +39,9 @@ const BgColorArray = [
         <img
           :alt="name"
           :src="
-            avatar.indexOf('imageMogr2') !== -1 && avatar.indexOf('.svg') !== -1
-              ? avatar + '?imageMogr2/auto-orient/thumbnail/120x'
+         
+            avatar.indexOf('imageView2') === -1 && avatar.indexOf('.svg') === -1&&avatar.indexOf('imageMogr2') === -1
+              ? `${avatar}?imageView2/1/w/200/h/200`
               : avatar
           "
           class="avatar-img"

@@ -20,9 +20,15 @@ const routes: Array<RouteRecordRaw> = [
         children: [],
       },
       {
-        path: "friendDiary",
-        name: "friendDiary",
-        component: () => import("@/views/diary/friendDiary.vue"),
+        path: "mateDiary",
+        name: "mateDiary",
+        component: () => import("@/views/diary/mateDiary.vue"),
+        children: [],
+      },
+      {
+        path: "homeDiary/:id",
+        name: "homeDiary",
+        component: () => import("@/views/diary/homeDiary.vue"),
         children: [],
       },
       {
@@ -53,6 +59,12 @@ const routes: Array<RouteRecordRaw> = [
         path: "mate",
         name: "mate",
         component: () => import("@/views/mate/mate.vue"),
+        children: [],
+      },
+      {
+        path: "mateBoard/:id",
+        name: "mateBoard",
+        component: () => import("@/views/mate/mateBoard.vue"),
         children: [],
       },
       {

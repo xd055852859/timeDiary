@@ -1,5 +1,106 @@
 {
-  "common":{
-    "login":"login"
+  "name": "Time Diary",
+  "sure": "Confirm",
+  "cancel": "cancel",
+  "copy": "Copy",
+  "common": {
+    "login": "Login",
+    "loginError": "Login failed, please login again",
+    "logoutSuccess": "Log out successfully"
+  },
+  "editor": {
+    "title": "Please enter a title",
+    "text": "Please enter text, or use/select function",
+    "characterCount": "Characters",
+    "img": "Picture preview"
+  },
+  "weather": {
+    "fog": "Fog",
+    "sunny": "Sunny",
+    "cloud": "Cloudy",
+    "windy": "Wind",
+    "rain": "Rain",
+    "thunderstorm": "Thunderstorm",
+    "snowy": "Snow",
+    "partlyCloud": "Cloudy to clear",
+    "haily": "Hail",
+    "sandy": "Sand"
+  },
+  "detail": {
+    "weather": "Weather",
+    "location": "Location",
+    "shareTo": "Journal sharing",
+    "isPublic": "Diary Drift",
+    "saving": "Saving",
+    "saved": "Saved",
+    "saveSuccess": "Saving succeeded"
+  },
+  "preview": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "isPublic": "Set as drifting",
+    "deleteTips": "Deletion Tips",
+    "deleteText": "Please confirm whether to delete the journal",
+    "deleteMessage": "Deletion succeeded",
+    "share": "Share",
+    "comment": "Comment",
+    "commentInput": "Let me say~",
+    "commentText": "Comment succeeded",
+    "deleteCommentTips": "Tips for deleting comments",
+    "deleteCommentText": "Please confirm whether to delete this comment (the comments replying to this comment will be deleted together)",
+    "deleteCommentSuccess": "Successfully deleted the comment"
+  },
+  "userCenter": {
+    "diary": "Home",
+    "gallery": "Gallery",
+    "drift": "Drifting Diary",
+    "mate": "Relatives and Friends",
+    "sun": "Highlight",
+    "moon": "Dark",
+    "set": "Setting",
+    "quit": "Exit",
+    "language": "Danguage",
+    "mode": "Mode"
+  },
+  "mate": {
+    "addMate": "Add relatives and friends",
+    "addButton": "Binding",
+    "addInput": "Please enter your friend id",
+    "inviteCode": "My invitation code",
+    "addMateSuccess": "Successfully added a friend, please wait for confirmation",
+    "addMateError": "Please enter your friend id",
+    "mateInput": "Please enter the names of relatives and friends"
+  },
+  "mateBoard": {
+    "header": "TA and I",
+    "title": "We begin to share the time diary",
+    "stopShareTitle": "Stop sharing",
+    "stopShareText": "The other party will not appear in the diary sharing list",
+    "hideShareTitle": "Hide shared",
+    "hideShareText": "The article shared to the opposite side will not be visible",
+    "shareSuccess": "Setting succeeded",
+    "unfriend": "Disassociate",
+    "unfriendTip": "Prompt for relationship dissolution",
+    "unfriendText": "Whether to dissolve the relationship with this friend",
+    "unfriendSuccess": "Successfully dissolved the relationship"
+  },
+  "message": {
+    "message": "Notification",
+    "setRead": "Set as read",
+    "read": "read",
+    "unRead": "Unread",
+    "addFriend": "Request to add you as a friend",
+    "agreeAdd": "Agree to add you as a friend",
+    "refuseAdd": "Refuse to add you as a friend",
+    "agree": "Agree",
+    "refuse": "Reject",
+    "handleAgree": "Agreed",
+    "handleRefuse": "Rejected"
+  },
+  "mateDiary": {
+    "mateDiary": "Family Diary"
+  },
+  "homeDiary": {
+    "homeDiary": "Discovery Diary"
   }
 }

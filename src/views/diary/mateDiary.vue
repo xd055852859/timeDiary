@@ -89,11 +89,11 @@ watch(
 );
 </script>
 <template clickState :clickBack="clickDiary()">
-  <cheader>
-    <template #title>{{ $t("friendDiary.friendDiary") }}</template>
+  <cheader :headerStyle="{ backgroundColor: 'var(--diary-diary-color)' }">
+    <template #title>{{ $t("mateDiary.mateDiary") }}</template>
     <template #right></template>
   </cheader>
-  <div class="friend-box">
+  <div class="friend-box" :style="{backgroundColor: 'var(--diary-diary-color)'}">
     <div
       v-for="item in filterMateList"
       :key="item._key"
@@ -103,7 +103,7 @@ watch(
       <el-badge
         :value="item.unReadNum"
         :hidden="item.unReadNum === 0"
-        style="margin-top:10px"
+        style="margin-top: 10px"
       >
         <avatar
           :name="item.userName"
@@ -145,10 +145,10 @@ watch(
         </el-date-picker>
       </div>
       <template v-for="diaryItem in diaryFriendList" :key="diaryItem._key">
-        <DiaryItem :info="diaryItem" :friendKey="chooseFriendKey"/>
+        <DiaryItem :info="diaryItem" :friendKey="chooseFriendKey" />
       </template>
     </div>
   </div>
 </template>
-<style src="./friendDiary.scss" scoped lang="scss"></style>
+<style src="./mateDiary.scss" scoped lang="scss"></style>
 <style></style>

@@ -50,7 +50,13 @@ const moveDiary = (key: string, e?: any) => {
 <template>
   <cheader isMenu>
     <template #title>{{ $t("userCenter.drift") }}</template>
-    <template #right></template>
+    <template #right
+      ><cicon
+        name="home"
+        :size="25"
+        @click="$router.push(`/home/homeDiary/${driftList[0].userKey}`)"
+        style="cursor: pointer"
+    /></template>
   </cheader>
   <div class="drift box">
     <div class="container">

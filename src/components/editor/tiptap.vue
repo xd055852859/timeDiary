@@ -51,8 +51,8 @@ const editor = useEditor({
     StarterKit,
     Placeholder.configure({
       placeholder: ({ node }) => {
-        const placeholderTitle = i18n.global.t(`detail.title`);
-        const placeholderStr = i18n.global.t(`detail.text`);
+        const placeholderTitle = i18n.global.t(`editor.title`);
+        const placeholderStr = i18n.global.t(`editor.text`);
         if (node.type.name === "heading") {
           return placeholderTitle;
         } else if (node.type.name === "paragraph") {
@@ -384,49 +384,49 @@ defineExpose({
     class="menu dp--center"
   >
     <div class="button dp--center" @click="insertNode('bold')">
-      <iconpark-icon name="bold" :size="26" />
+      <cicon name="bold"  :size="26" />
     </div>
     <div class="button dp--center" @click="insertNode('italic')">
-      <iconpark-icon name="italic" :size="26" />
+      <cicon name="italic" :size="26" />
     </div>
     <div class="button dp--center" @click="insertNode('strike')">
-      <iconpark-icon name="strike" :size="26" />
+      <cicon name="strike" :size="26" />
     </div>
     <div class="button dp--center" @click="insertNode('underline')">
-      <iconpark-icon name="u" :size="26" />
+      <cicon name="u" :size="26" />
     </div>
     <div @click="insertNode('h1')" class="button dp--center">
-      <iconpark-icon name="H1" :size="26" />
+      <cicon name="H1" :size="26" />
     </div>
     <div @click="insertNode('h2')" class="button dp--center">
-      <iconpark-icon name="H2" :size="26" />
+      <cicon name="H2" :size="26" />
     </div>
     <div @click="insertNode('h3')" class="button dp--center">
-      <iconpark-icon name="H3" :size="26" />
+      <cicon name="H3" :size="26" />
     </div>
     <div @click="insertNode('link')" class="button dp--center">
-      <iconpark-icon name="setLink" :size="26" />
+      <cicon name="setLink" :size="26" />
     </div>
     <div @click="insertNode('bulletList')" class="button dp--center">
-      <iconpark-icon name="bulletList" :size="26" />
+      <cicon name="bulletList" :size="26" />
     </div>
     <div @click="insertNode('orderList')" class="button dp--center">
-      <iconpark-icon name="orderedList" :size="26" />
+      <cicon name="orderedList" :size="26" />
     </div>
     <div @click="insertNode('taskList')" class="button dp--center">
-      <iconpark-icon name="taskList" :size="26" />
+      <cicon name="taskList" :size="26" />
     </div>
     <div @click="insertNode('divider')" class="button dp--center">
-      <iconpark-icon name="horizontalRule" :size="26" />
+      <cicon name="horizontalRule" :size="26" />
     </div>
     <div @click="insertNode('blockquote')" class="button dp--center">
-      <iconpark-icon name="blockquote" :size="26" />
+      <cicon name="blockquote" :size="26" />
     </div>
     <div @click="insertNode('code')" class="button dp--center">
-      <iconpark-icon name="code" :size="26" />
+      <cicon name="code" :size="26" />
     </div>
     <div @click="insertNode('codeBlock')" class="button dp--center">
-      <iconpark-icon name="codeblock" :size="26" />
+      <cicon name="codeblock" :size="26" />
     </div>
   </bubble-menu>
 
